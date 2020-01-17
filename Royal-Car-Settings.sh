@@ -47,7 +47,7 @@ Action=$(echo $Act | tr “[A-Z]” “[a-z]”) # Reformat the Action varible t
 ODFolder="/Users/$UserName/$ODFolderName" # Construct the OneDrive Folder path
 #
 # Set the name of the script for later logging
-ScriptName="ZZ 17 - Global Settings - OneDrive Settings Script"
+ScriptName="append prefix here as needed - OneDrive Settings Script"
 #
 ###############################################################################################################################################
 #
