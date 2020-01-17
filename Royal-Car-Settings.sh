@@ -16,6 +16,14 @@
 #				Then it will either report on the settings, or attempt to set them up according
 #				the provided "Action" variable
 #
+#	- Note : There are potential inherant permissions issues in the "Configuring OneDrive" portion
+#				of this script that at present do not seem solvable, so I cannot recommend permissions
+#				to use with this script.
+#				Therefore the current reccomendation for JAMF users, is to have this script run via a Policy
+#				that is scoped for all Computers and all users and only Run by a custom Trigger.
+#				Then have another policy with a login Script that as it's final action calls the policy with
+#				this script in it as a background task.
+#
 ###############################################################################################################################################
 #
 # HISTORY
