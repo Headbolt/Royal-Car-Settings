@@ -28,9 +28,12 @@
 #
 # HISTORY
 #
-#	Version: 1.0 - 16/01/2020
+#	Version: 1.1 - 20/01/2020
 #
 #	- 16/01/2020 - V1.0 - Created by Headbolt
+#
+#	- 20/01/2020 - V1.1 - Created by Headbolt
+#							Updated to include error/exit codes for ease of identifying when OneDrive Not Found
 #
 ###############################################################################################################################################
 #
@@ -45,6 +48,7 @@ Act=$5 # Grab decision to "Report" or "Action" the findings of this script from 
 Action=$(echo $Act | tr “[A-Z]” “[a-z]”) # Reformat the Action varible to Ignore case
 #
 ODFolder="/Users/$UserName/$ODFolderName" # Construct the OneDrive Folder path
+ExitCode=0
 #
 # Set the name of the script for later logging
 ScriptName="append prefix here as needed - OneDrive Settings Script"
@@ -113,6 +117,7 @@ if [ "$Action" == "report" ]
 				/bin/echo "Script Action is set to Take Action if needed"
 			else
 				/bin/echo "Report / Action Variable Not Set For This Script"
+				ExitCode=1
 				SectionEnd
 				ScriptEnd
         fi
@@ -138,9 +143,9 @@ if ! [ -d "$ODFolder" ]
 		/bin/echo "Use Microsoft Office Credentials Keychain setting" $DefaultsEntry
 		if [ "$Action" == "report" ]
 			then
+				ExitCode=0
 				SectionEnd
 				ScriptEnd
-				exit 0
 		fi
 		#
 		if [ "$Action" == "action" ]
@@ -156,6 +161,7 @@ if ! [ -d "$ODFolder" ]
 				if [[ $OneDriveBuildNumber > "19221" ]]
 					then 
 						ODsetup
+						ExitCode=5
 					else
 						/bin/echo "OneDrive is at Version $OneDriveVers"
 						/bin/echo "Auto Setup script requies at least 19222.0000.0000"
@@ -187,9 +193,9 @@ if [[ "$KeyChainEntry" == "Exists" ]]
 		/bin/echo "Microsoft Office Credentials Keychain entry Does Not Exist"
 		/bin/echo "OneDrive Setup cannot continue."
 		#
+		ExitCode=1
 		SectionEnd
 		ScriptEnd
-		exit 1
 fi
 #
 /bin/echo "Use Microsoft Office Credentials Keychain setting" $DefaultsEntry
@@ -208,9 +214,9 @@ if [[ "$DefaultsEntry" != "Is Set" ]]
 		if [[ "$DefaultsEntry" != "Is Set" ]]
 			then
 				/bin/echo "OneDrive Setup cannot continue."
+				ExitCode=1
 				SectionEnd
 				ScriptEnd
-				exit 1
 		fi
 fi
 #
@@ -414,6 +420,7 @@ ScriptEnd(){
 #
 /bin/echo # Outputting a Blank Line for Reporting Purposes
 #
+exit $ExitCode
 }
 #
 ###############################################################################################################################################
